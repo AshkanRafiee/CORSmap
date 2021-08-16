@@ -6,18 +6,18 @@ from urllib.parse import urlsplit
 
 def cors_tester(url):
     # Define Testing Origins and Headers
-    origin_list = ["*","null","true",".example.foo","_.example.foo","http://example.foo"]
+    origin_list = ["*","null","true","http://example.foo",".example.foo","_.example.foo"]
     headers_list = ["Access-Control-Allow-Origin","Access-Control-Allow-Credentials"]
     vulnerability_list = []
 
     # Send First Request to Determine Vulnerablity...
-    print("\nTesting Default",end="\r")
+    print("\nTesting Default Request")
     r1 = requests.get(url)
     for header in headers_list:
         if header in r1.headers:
                 if r.headers[header] in origin_list:
-                    # print("     DETECTED:",header,":",r1.headers[header],"\n")
-                    vulnerability_list.append(f"{header}: {r1.headers[header]}")
+                    print("     DETECTED:",header,":",r1.headers[header],"\n")
+                    vulnerability_list.append({header:r1.headers[header]})
     
     # Expanding Test y your url
     expanded_list = origin_list.copy()
@@ -28,14 +28,14 @@ def cors_tester(url):
 
     # Testing Different Origins to Make Sure!
     for origin in expanded_list:
-        print("Testing","Origin:",origin,end="\r")
+        print("Testing","Origin:",origin)
         time.sleep(0.25)
         r = requests.get(url,headers={"Origin":origin})
         for header in headers_list:
             if header in r.headers:
                 if r.headers[header] in origin_list:
-                    # print("     DETECTED:",header,": ",r.headers[header],"\n")
-                    vulnerability_list.append(f"{header}: {r.headers[header]}")
+                    print("     DETECTED:",header,": ",r.headers[header],"\n")
+                    vulnerability_list.append({header:r.headers[header]})
     return vulnerability_list
 
 def main(argv):
@@ -55,10 +55,6 @@ def main(argv):
             vulnerability_list = cors_tester(final_url)
             if len(vulnerability_list):
                 print("\n",final_url,"is Vulnerable!\n")
-                unique_list = set(vulnerability_list)
-                unique_list = list(unique_list)
-                for item in unique_list:
-                    print(item)
             else:
                 print("\n",final_url,"is not Vulnerable...\n")
     except:
