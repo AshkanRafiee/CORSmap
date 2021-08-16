@@ -16,7 +16,7 @@ def cors_tester(url):
     for header in headers_list:
         if header in r1.headers:
                 if r.headers[header] in origin_list:
-                    print("\nVulnerable!",header,":",r1.headers[header],"\n")
+                    print("     DETECTED:",header,":",r1.headers[header],"\n")
                     vulnerability_list.append({header:r1.headers[header]})
     
     # Expanding Test y your url
@@ -34,7 +34,7 @@ def cors_tester(url):
         for header in headers_list:
             if header in r.headers:
                 if r.headers[header] in origin_list:
-                    print("     DETECTED:",header + ": " + r.headers[header],"\n")
+                    print("     DETECTED:",header,": ",r.headers[header],"\n")
                     vulnerability_list.append({header:r.headers[header]})
     return vulnerability_list
 
