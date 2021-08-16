@@ -17,7 +17,7 @@ def cors_tester(url):
         if header in r1.headers:
                 if r.headers[header] in origin_list:
                     print("     DETECTED:",header,":",r1.headers[header],"\n")
-                    vulnerability_list.append({header:r1.headers[header]})
+                    vulnerability_list.append(f"{header}: {r.headers[header]}")
     
     # Expanding Test y your url
     expanded_list = origin_list.copy()
@@ -35,7 +35,7 @@ def cors_tester(url):
             if header in r.headers:
                 if r.headers[header] in origin_list:
                     print("     DETECTED:",header,": ",r.headers[header],"\n")
-                    vulnerability_list.append({header:r.headers[header]})
+                    vulnerability_list.append(f"{header}: {r.headers[header]}")
     return vulnerability_list
 
 def main(argv):
@@ -53,6 +53,7 @@ def main(argv):
                 print(f"\nYou have been redirected from {url} to {final_url}")
             time.sleep(0.25)
             vulnerability_list = cors_tester(final_url)
+            vulnerability_list = set(vulnerability_list)
             if len(vulnerability_list):
                 print("\n",final_url,"is Vulnerable!\n")
             else:
