@@ -1,7 +1,7 @@
 import requests
 import time
 import sys
-from urllib.parse import urlsplit, urlunsplit
+from urllib.parse import urlsplit
 
 
 def cors_tester(url):
